@@ -76,9 +76,11 @@ public class UnicycleController : MonoBehaviour
 			{
 				case Player.Bike1:
 					ScoreScript.Player1Scored();
+					transform.localScale += Vector3.one * ScoreScript.Player1Score / 20;
 					break;
 				case Player.Bike2:
 					ScoreScript.Player2Scored();
+					transform.localScale += Vector3.one * ScoreScript.Player2Score / 20;
 					break;
 				default:
 					break;
@@ -164,21 +166,14 @@ public class UnicycleController : MonoBehaviour
 		{
 			case Player.Bike1:
 
-
 				Wheel.GetComponent<RotateScript>().SetRotationSpeed(Input.GetAxis("HorizontalP1") + Input.GetAxis("VerticalP1") * MoveSpeedP1);
-
 
 				break;
 
 			case Player.Bike2:
-				if (IsPlayerTwoMoving())
-				{
-					Wheel.GetComponent<RotateScript>().SetRotationSpeed(MoveSpeedP2);
-				}
-				else
-				{
-					Wheel.GetComponent<RotateScript>().SetRotationSpeed(0f);
-				}
+
+				Wheel.GetComponent<RotateScript>().SetRotationSpeed(Input.GetAxis("HorizontalP2") + Input.GetAxis("VerticalP2") * MoveSpeedP2);
+
 				break;
 			default:
 				break;
@@ -221,6 +216,12 @@ public class UnicycleController : MonoBehaviour
 		}
 
 		//transform.Rotate(0, 0, Input.GetAxis("P1Acc"));
+
+	}
+
+
+	private void CanEatOther()
+	{
 
 	}
 }
