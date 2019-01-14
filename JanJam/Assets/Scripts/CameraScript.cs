@@ -8,13 +8,17 @@ public class CameraScript : MonoBehaviour
 	public GameObject CameraPoint;
 
 	private Vector3 Offset;
+	private Quaternion RotOffset;
 
 
 
 	private void Start()
 	{
 		Offset = transform.position - CameraPoint.transform.position;
+
+		
 	}
+
 
 	void LateUpdate()
     {

@@ -19,6 +19,7 @@ public class UnicycleController : MonoBehaviour
 	private Transform TS;
 
 	[Header("Player1")]
+	public GameObject P1Follow;
 	public float MoveSpeedP1;
 	public float MinSpeedP1 = 3f;
 	public float MaxSpeedP1 = 10f;
@@ -53,6 +54,7 @@ public class UnicycleController : MonoBehaviour
 				IsPlayerOneMoving();
 				break;
 			case Player.Bike2:
+				AccP2();
 				IsPlayerTwoMoving();
 				break;
 			default:
@@ -100,13 +102,14 @@ public class UnicycleController : MonoBehaviour
 			case Player.Bike2:
 				Ver = Input.GetAxis("VerticalP2");
 				RB.velocity = transform.forward * Ver * MoveSpeedP2;
+
 				break;
 			default:
 				break;
 		}
 	}
 
-
+	
 
 	private void Rotation()
 	{
@@ -116,17 +119,18 @@ public class UnicycleController : MonoBehaviour
 		{
 			case Player.Bike1:
 				Hoz = Input.GetAxis("HorizontalP1");
-				TS.rotation *= Quaternion.Euler(Vector3.up * Hoz * MoveSpeedP1);
+				RB.velocity += transform.right * Hoz * MoveSpeedP1;
+				TS.rotation *= Quaternion.Euler(transform.worldToLocalMatrix.MultiplyVector(transform.up) * Hoz * 4);
 				break;
 			case Player.Bike2:
 				Hoz = Input.GetAxis("HorizontalP2");
-				TS.rotation *= Quaternion.Euler(Vector3.up * Hoz * MoveSpeedP2);
+				RB.velocity += transform.right * Hoz * MoveSpeedP2;
+				TS.rotation *= Quaternion.Euler(transform.worldToLocalMatrix.MultiplyVector(transform.up) * Hoz * MoveSpeedP2);
 				break;
 			default:
 				break;
 		}
 	}
-
 
 
 	private bool IsPlayerOneMoving()
@@ -160,14 +164,9 @@ public class UnicycleController : MonoBehaviour
 		{
 			case Player.Bike1:
 
-				if (IsPlayerOneMoving())
-				{
-					Wheel.GetComponent<RotateScript>().SetRotationSpeed(MoveSpeedP1);
-				}
-				else
-				{
-					Wheel.GetComponent<RotateScript>().SetRotationSpeed(0f);
-				}
+
+				Wheel.GetComponent<RotateScript>().SetRotationSpeed(Input.GetAxis("HorizontalP1") + Input.GetAxis("VerticalP1") * MoveSpeedP1);
+
 
 				break;
 
@@ -187,8 +186,41 @@ public class UnicycleController : MonoBehaviour
 
 	}
 
+
 	private void AccP1()
 	{
-		MoveSpeedP1 = Input.GetAxis("VerticalP1") * AccelerationSpeedP1;
+		if (Input.GetAxis("P1Acc") > 0)
+		{
+			MoveSpeedP1 += Time.deltaTime * 5;
+		}
+		else
+		{
+			if (MoveSpeedP1 > 0)
+			{
+				MoveSpeedP1 -= Time.deltaTime;
+			}
+		}
+
+		//transform.Rotate(0, 0, Input.GetAxis("P1Acc"));
+
+	}
+
+
+	private void AccP2()
+	{
+		if (Input.GetAxis("P2Acc") > 0)
+		{
+			MoveSpeedP2 += Time.deltaTime * 5;
+		}
+		else
+		{
+			if (MoveSpeedP2 > 0)
+			{
+				MoveSpeedP2 -= Time.deltaTime;
+			}
+		}
+
+		//transform.Rotate(0, 0, Input.GetAxis("P1Acc"));
+
 	}
 }
