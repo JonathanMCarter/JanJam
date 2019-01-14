@@ -19,7 +19,6 @@ public class UnicycleController : MonoBehaviour
 	private Transform TS;
 
 	[Header("Player1")]
-	public GameObject P1Follow;
 	public float MoveSpeedP1;
 	public float MinSpeedP1 = 3f;
 	public float MaxSpeedP1 = 10f;
@@ -68,7 +67,7 @@ public class UnicycleController : MonoBehaviour
 
 
 
-	private void OnCollisionEnter(Collision collision)
+	private void OnTriggerEnter(Collider collision)
 	{
 		if (collision.gameObject.tag == "Collect")
 		{
@@ -99,11 +98,11 @@ public class UnicycleController : MonoBehaviour
 		{
 			case Player.Bike1:
 				Ver = Input.GetAxis("VerticalP1");
-				RB.velocity = transform.forward * Ver * MoveSpeedP1;
+				RB.velocity = transform.forward * Ver * MoveSpeedP1 * AccelerationSpeedP1;
 				break;
 			case Player.Bike2:
 				Ver = Input.GetAxis("VerticalP2");
-				RB.velocity = transform.forward * Ver * MoveSpeedP2;
+				RB.velocity = transform.forward * Ver * MoveSpeedP2 * AccelerationSpeedP2;
 
 				break;
 			default:
