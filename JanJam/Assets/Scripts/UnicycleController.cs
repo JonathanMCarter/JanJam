@@ -75,17 +75,34 @@ public class UnicycleController : MonoBehaviour
 			{
 				case Player.Bike1:
 					ScoreScript.Player1Scored();
-					transform.localScale += Vector3.one * ScoreScript.Player1Score / 20;
+					transform.localScale += Vector3.one * ScoreScript.Player1Score / 100;
 					break;
 				case Player.Bike2:
 					ScoreScript.Player2Scored();
-					transform.localScale += Vector3.one * ScoreScript.Player2Score / 20;
+					transform.localScale += Vector3.one * ScoreScript.Player2Score / 100;
 					break;
 				default:
 					break;
 			}
 
 			Destroy(collision.gameObject);
+		}
+
+
+
+		else if (collision.gameObject.tag == "PowerUp")
+		{
+			switch (WhichUnicycle)
+			{
+				case Player.Bike1:
+
+					break;
+				case Player.Bike2:
+
+					break;
+				default:
+					break;
+			}
 		}
 	}
 
@@ -215,12 +232,6 @@ public class UnicycleController : MonoBehaviour
 		}
 
 		//transform.Rotate(0, 0, Input.GetAxis("P1Acc"));
-
-	}
-
-
-	private void CanEatOther()
-	{
 
 	}
 }

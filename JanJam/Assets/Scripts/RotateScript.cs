@@ -17,8 +17,6 @@ public class RotateScript : MonoBehaviour
 	[Header("Speed of the rotation")]
 	public float Speed;     // Float for the speed of the rotation
 
-	public bool LocalRotation;
-
 	// Update is called once per display frame
 	void FixedUpdate ()
 	{
