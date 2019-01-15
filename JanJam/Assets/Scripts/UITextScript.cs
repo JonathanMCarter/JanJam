@@ -28,10 +28,10 @@ public class UITextScript : MonoBehaviour
 		switch (WhichPlayer)
 		{
 			case Player.Player1:
-				text.text = "Score: " + ScoreScript.Player1Score.ToString();
+				text.text = "SCORE: " + ScoreScript.Player1Score.ToString();
 				break;
 			case Player.Player2:
-				text.text = "Score: " + ScoreScript.Player2Score.ToString();
+				text.text = "SCORE: " + ScoreScript.Player2Score.ToString();
 				break;
 			default:
 				break;

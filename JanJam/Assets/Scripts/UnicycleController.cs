@@ -14,6 +14,7 @@ public class UnicycleController : MonoBehaviour
 
 	public GameObject Pedals;
 	public GameObject Wheel;
+	public GameObject P1Body;
 
 	private Rigidbody RB;
 	private Transform TS;
@@ -65,6 +66,11 @@ public class UnicycleController : MonoBehaviour
 		RotateWheel();
 	}
 
+	private void FixedUpdate()
+	{
+		Rotation();
+	}
+
 
 
 	private void OnTriggerEnter(Collider collision)
@@ -76,6 +82,8 @@ public class UnicycleController : MonoBehaviour
 				case Player.Bike1:
 					ScoreScript.Player1Scored();
 					transform.localScale += Vector3.one * ScoreScript.Player1Score / 100;
+					P1Body.transform.localScale += Vector3.one * ScoreScript.Player1Score / 100;
+
 					break;
 				case Player.Bike2:
 					ScoreScript.Player2Scored();
@@ -132,17 +140,19 @@ public class UnicycleController : MonoBehaviour
 	private void Rotation()
 	{
 		float Hoz;
+		transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
 
 		switch (WhichUnicycle)
 		{
 			case Player.Bike1:
 				Hoz = Input.GetAxis("HorizontalP1");
-				RB.velocity += transform.right * Hoz * MoveSpeedP1;
-				TS.rotation *= Quaternion.Euler(transform.worldToLocalMatrix.MultiplyVector(transform.up) * Hoz * 4);
+				//RB.velocity += transform.right * Hoz * MoveSpeedP1;
+				//TS.rotation *= Quaternion.Euler(Vector3.up * Hoz * MoveSpeedP1);
+				transform.eulerAngles += Vector3.up * Hoz * MoveSpeedP1;
 				break;
 			case Player.Bike2:
 				Hoz = Input.GetAxis("HorizontalP2");
-				RB.velocity += transform.right * Hoz * MoveSpeedP2;
+				//RB.velocity += transform.right * Hoz * MoveSpeedP2;
 				TS.rotation *= Quaternion.Euler(transform.worldToLocalMatrix.MultiplyVector(transform.up) * Hoz * MoveSpeedP2);
 				break;
 			default:
