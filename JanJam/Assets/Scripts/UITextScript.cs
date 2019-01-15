@@ -11,6 +11,8 @@ public class UITextScript : MonoBehaviour
 		Player1,
 		Player2,
 		Timer,
+		Player1Number,
+		Player2Number,
 	};
 
 	public Element WhichElement;
@@ -42,6 +44,12 @@ public class UITextScript : MonoBehaviour
 				break;
 			case Element.Timer:
 				text.text = TimeScript.DisplayTimer();
+				break;
+			case Element.Player1Number:
+				text.text = ScoreScript.Player1Score.ToString();
+				break;
+			case Element.Player2Number:
+				text.text = ScoreScript.Player2Score.ToString();
 				break;
 			default:
 				break;

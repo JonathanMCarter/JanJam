@@ -23,7 +23,7 @@ public class TimerScript : MonoBehaviour
 	{
 		if (TimerStarted)
 		{
-			if (Timer > 0)
+			if (Timer > .2f)
 			{
 				Timer -= Time.deltaTime;
 			}
