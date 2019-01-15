@@ -60,19 +60,19 @@ public class UnicycleController : MonoBehaviour
 			default:
 				break;
 		}
-		Rotation();
+
 		Movement();
 		RotateWheel();
 	}
 
 	private void FixedUpdate()
 	{
-
+		Rotation();
 	}
 
 
 
-	private void OnTriggerEnter(Collider collision)
+	private void OnCollisionEnter(Collision collision)
 	{
 		if (collision.gameObject.tag == "Collect")
 		{

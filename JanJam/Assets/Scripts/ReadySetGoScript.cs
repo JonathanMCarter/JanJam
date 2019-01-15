@@ -8,6 +8,7 @@ public class ReadySetGoScript : MonoBehaviour
 	[Header("Text - Should Auto Reference")]
 	public Text ReadyTextP1;
 	public Text ReadyTextP2;
+	public Text PedelText;
 
 	[Header("Colours - Make sure the alpha is 1!")]
 	public Color ReadyColour;
@@ -25,6 +26,7 @@ public class ReadySetGoScript : MonoBehaviour
     {
 		ReadyTextP1 = GetComponentsInChildren<Text>()[0];
 		ReadyTextP2 = GetComponentsInChildren<Text>()[1];
+		PedelText = GetComponentsInChildren<Text>()[2];
 		TimeScript = GameObject.Find("TimerClock").GetComponent<TimerScript>();
     }
 
@@ -42,12 +44,14 @@ public class ReadySetGoScript : MonoBehaviour
 					P2RB.constraints = RigidbodyConstraints.FreezePosition;
 					ReadyTextP1.text = "";
 					ReadyTextP2.text = "";
+					PedelText.text = "";
 					break;
 				case (1):
 					ReadyTextP1.text = "READY";
 					ReadyTextP1.color = ReadyColour;
 					ReadyTextP2.text = "READY";
 					ReadyTextP2.color = ReadyColour;
+					PedelText.text = "START PEDELLING.....";
 					break;
 				case (3):
 					ReadyTextP1.text = "SET";
@@ -63,6 +67,7 @@ public class ReadySetGoScript : MonoBehaviour
 					TimeScript.StartTimer(90f);
 					P1RB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
 					P2RB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
+					PedelText.text = "";
 					break;
 				case (6):
 					ReadyTextP1.text = "";
