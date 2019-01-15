@@ -6,32 +6,42 @@ using UnityEngine.UI;
 public class UITextScript : MonoBehaviour
 {
 
-	public enum Player
+	public enum Element
 	{
 		Player1,
 		Player2,
+		Timer,
 	};
 
-	public Player WhichPlayer;
+	public Element WhichElement;
 	private Text text;
 	private ScoringScript ScoreScript;
+	private TimerScript TimeScript;
 
 
 	private void Start()
 	{
 		text = GetComponent<Text>();
 		ScoreScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoringScript>();
+
+		if (GetComponent<TimerScript>())
+		{
+			TimeScript = GetComponent<TimerScript>();
+		}
 	}
 
 	private void Update()
 	{
-		switch (WhichPlayer)
+		switch (WhichElement)
 		{
-			case Player.Player1:
+			case Element.Player1:
 				text.text = "SCORE: " + ScoreScript.Player1Score.ToString();
 				break;
-			case Player.Player2:
+			case Element.Player2:
 				text.text = "SCORE: " + ScoreScript.Player2Score.ToString();
+				break;
+			case Element.Timer:
+				text.text = TimeScript.DisplayTimer();
 				break;
 			default:
 				break;
