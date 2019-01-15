@@ -14,7 +14,8 @@ public class UnicycleController : MonoBehaviour
 
 	public GameObject Pedals;
 	public GameObject Wheel;
-	public GameObject P1Body;
+	public GameObject SpikedWheel;
+	public GameObject RocketPower;
 
 	private Rigidbody RB;
 	private Transform TS;
@@ -102,6 +103,16 @@ public class UnicycleController : MonoBehaviour
 			switch (WhichUnicycle)
 			{
 				case Player.Bike1:
+					
+					if (collision.gameObject.name == "Rockets")
+					{
+						RocketPower.SetActive(true);
+					}
+					else if (collision.gameObject.name == "Spikes")
+					{
+						SpikedWheel.SetActive(true);
+						Wheel.SetActive(false);
+					}
 
 					break;
 				case Player.Bike2:
@@ -127,7 +138,6 @@ public class UnicycleController : MonoBehaviour
 			case Player.Bike2:
 				Ver = Input.GetAxis("VerticalP2");
 				RB.velocity = transform.forward * Ver * MoveSpeedP2 * AccelerationSpeedP2;
-
 				break;
 			default:
 				break;
@@ -192,6 +202,7 @@ public class UnicycleController : MonoBehaviour
 			case Player.Bike1:
 
 				Wheel.GetComponent<RotateScript>().SetRotationSpeed(Input.GetAxis("HorizontalP1") + Input.GetAxis("VerticalP1") * MoveSpeedP1);
+				SpikedWheel.GetComponent<RotateScript>().SetRotationSpeed(Input.GetAxis("HorizontalP1") + Input.GetAxis("VerticalP1") * MoveSpeedP1);
 
 				break;
 
