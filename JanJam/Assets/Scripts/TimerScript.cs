@@ -11,7 +11,13 @@ public class TimerScript : MonoBehaviour
 	private string Mins;
 
 	private bool TimerStarted;
+	private GameController Controller;
 
+
+	private void Start()
+	{
+		Controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+	}
 
 	private void Update()
 	{
@@ -23,7 +29,7 @@ public class TimerScript : MonoBehaviour
 			}
 			else
 			{
-				// end game
+				Controller.ChangeScene(Scenes.End);
 			}
 		}
 	}

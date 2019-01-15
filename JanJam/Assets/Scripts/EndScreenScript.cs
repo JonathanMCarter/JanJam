@@ -20,13 +20,13 @@ public class EndScreenScript : MonoBehaviour
 
 		if (ScoreScript.Player1Score > ScoreScript.Player2Score)
 		{
-			PurpleUni.SetActive(true);
+			//PurpleUni.SetActive(true);
 			HeadlineText.text = "Purple Unicycle Takes Over!";
 			ArticleTextPT2.text = "Religious figures have praised the unicycle as their new god. The general public have been buying out unicycles to appease the beast with some success, as long as the unicycle was purple.";
 		}
 		else if (ScoreScript.Player1Score < ScoreScript.Player2Score)
 		{
-			RedUni.SetActive(true);
+			//RedUni.SetActive(true);
 			HeadlineText.text = "Red Unicycle Takes Over!";
 			ArticleTextPT2.text = "Religious figures have praised the unicycle as their new god. The general public have been buying out unicycles to appease the beast with some success, as long as the unicycle was red.";
 		}
