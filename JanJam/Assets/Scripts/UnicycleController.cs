@@ -82,8 +82,7 @@ public class UnicycleController : MonoBehaviour
 				case Player.Bike1:
 					ScoreScript.Player1Scored();
 					transform.localScale += Vector3.one * ScoreScript.Player1Score / 100;
-					P1Body.transform.localScale += Vector3.one * ScoreScript.Player1Score / 100;
-
+					GetComponent<FixedJoint>().connectedAnchor = transform.localPosition;
 					break;
 				case Player.Bike2:
 					ScoreScript.Player2Scored();
