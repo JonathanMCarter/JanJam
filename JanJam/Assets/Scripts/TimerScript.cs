@@ -10,20 +10,23 @@ public class TimerScript : MonoBehaviour
 	private string Secs;
 	private string Mins;
 
+	private bool TimerStarted;
+
 
 	private void Update()
 	{
-		if (Timer > 0)
+		if (TimerStarted)
 		{
-			Timer -= Time.deltaTime;
-		}
-		else
-		{
-			// end game
+			if (Timer > 0)
+			{
+				Timer -= Time.deltaTime;
+			}
+			else
+			{
+				// end game
+			}
 		}
 	}
-
-
 
 	public string DisplayTimer()
 	{
@@ -31,5 +34,21 @@ public class TimerScript : MonoBehaviour
 		Secs = Mathf.Floor(Timer % 60).ToString("00");
 
 		return (Mins + ":" + Secs);
+	}
+
+	internal void StartTimer()
+	{
+		TimerStarted = true;
+	}
+
+	internal void StartTimer(float Value)
+	{
+		Timer = Value;
+		TimerStarted = true;
+	}
+
+	internal void StopTimer()
+	{
+		TimerStarted = false;
 	}
 }
