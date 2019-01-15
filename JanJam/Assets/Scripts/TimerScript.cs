@@ -30,7 +30,7 @@ public class TimerScript : MonoBehaviour
 
 	public string DisplayTimer()
 	{
-		Mins = Mathf.Floor(Timer / 60).ToString("00");
+		Mins = Mathf.Floor(Timer / 60).ToString("0");
 		Secs = Mathf.Floor(Timer % 60).ToString("00");
 
 		return (Mins + ":" + Secs);

@@ -32,7 +32,7 @@ public class UnicycleController : MonoBehaviour
 	public float MaxSpeedP2 = 10f;
 	public float AccelerationSpeedP2 = .25f;
 
-	public Quaternion Rot;
+	private bool HasSpikedWheels;
 
 	private ScoringScript ScoreScript;
 
@@ -41,7 +41,6 @@ public class UnicycleController : MonoBehaviour
 	{
 		RB = GetComponent<Rigidbody>();
 		TS = GetComponent<Transform>();
-		Rot = new Quaternion(0, 0, 10 * Time.deltaTime, 0);
 		ScoreScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoringScript>();
     }
 
@@ -61,15 +60,14 @@ public class UnicycleController : MonoBehaviour
 			default:
 				break;
 		}
-
-		Movement();
 		Rotation();
+		Movement();
 		RotateWheel();
 	}
 
 	private void FixedUpdate()
 	{
-		Rotation();
+
 	}
 
 
@@ -88,6 +86,7 @@ public class UnicycleController : MonoBehaviour
 				case Player.Bike2:
 					ScoreScript.Player2Scored();
 					transform.localScale += Vector3.one * ScoreScript.Player2Score / 100;
+					GetComponent<FixedJoint>().connectedAnchor = transform.localPosition;
 					break;
 				default:
 					break;
@@ -116,6 +115,16 @@ public class UnicycleController : MonoBehaviour
 
 					break;
 				case Player.Bike2:
+
+					if (collision.gameObject.name == "Rockets")
+					{
+						RocketPower.SetActive(true);
+					}
+					else if (collision.gameObject.name == "Spikes")
+					{
+						SpikedWheel.SetActive(true);
+						Wheel.SetActive(false);
+					}
 
 					break;
 				default:
@@ -155,14 +164,11 @@ public class UnicycleController : MonoBehaviour
 		{
 			case Player.Bike1:
 				Hoz = Input.GetAxis("HorizontalP1");
-				//RB.velocity += transform.right * Hoz * MoveSpeedP1;
-				//TS.rotation *= Quaternion.Euler(Vector3.up * Hoz * MoveSpeedP1);
 				transform.eulerAngles += Vector3.up * Hoz * MoveSpeedP1;
 				break;
 			case Player.Bike2:
 				Hoz = Input.GetAxis("HorizontalP2");
-				//RB.velocity += transform.right * Hoz * MoveSpeedP2;
-				TS.rotation *= Quaternion.Euler(transform.worldToLocalMatrix.MultiplyVector(transform.up) * Hoz * MoveSpeedP2);
+				transform.eulerAngles += Vector3.up * Hoz * MoveSpeedP2;
 				break;
 			default:
 				break;
@@ -209,6 +215,7 @@ public class UnicycleController : MonoBehaviour
 			case Player.Bike2:
 
 				Wheel.GetComponent<RotateScript>().SetRotationSpeed(Input.GetAxis("HorizontalP2") + Input.GetAxis("VerticalP2") * MoveSpeedP2);
+				SpikedWheel.GetComponent<RotateScript>().SetRotationSpeed(Input.GetAxis("HorizontalP1") + Input.GetAxis("VerticalP2") * MoveSpeedP2);
 
 				break;
 			default:
@@ -220,15 +227,32 @@ public class UnicycleController : MonoBehaviour
 
 	private void AccP1()
 	{
-		if (Input.GetAxis("P1Acc") > 0)
+		if (!HasSpikedWheels)
 		{
-			MoveSpeedP1 += Time.deltaTime * 5;
+			if (Input.GetAxis("P1Acc") > 0)
+			{
+				MoveSpeedP1 += Time.deltaTime * 5;
+			}
+			else
+			{
+				if (MoveSpeedP1 > 0)
+				{
+					MoveSpeedP1 -= Time.deltaTime;
+				}
+			}
 		}
 		else
 		{
-			if (MoveSpeedP1 > 0)
+			if (Input.GetAxis("P1Acc") > 0)
 			{
-				MoveSpeedP1 -= Time.deltaTime;
+				MoveSpeedP1 += Time.deltaTime * 10;
+			}
+			else
+			{
+				if (MoveSpeedP1 > 0)
+				{
+					MoveSpeedP1 -= Time.deltaTime;
+				}
 			}
 		}
 
@@ -239,15 +263,32 @@ public class UnicycleController : MonoBehaviour
 
 	private void AccP2()
 	{
-		if (Input.GetAxis("P2Acc") > 0)
+		if (!HasSpikedWheels)
 		{
-			MoveSpeedP2 += Time.deltaTime * 5;
+			if (Input.GetAxis("P2Acc") > 0)
+			{
+				MoveSpeedP2 += Time.deltaTime * 5;
+			}
+			else
+			{
+				if (MoveSpeedP2 > 0)
+				{
+					MoveSpeedP2 -= Time.deltaTime;
+				}
+			}
 		}
 		else
 		{
-			if (MoveSpeedP2 > 0)
+			if (Input.GetAxis("P2Acc") > 0)
 			{
-				MoveSpeedP2 -= Time.deltaTime;
+				MoveSpeedP2 += Time.deltaTime * 10;
+			}
+			else
+			{
+				if (MoveSpeedP2 > 0)
+				{
+					MoveSpeedP2 -= Time.deltaTime;
+				}
 			}
 		}
 

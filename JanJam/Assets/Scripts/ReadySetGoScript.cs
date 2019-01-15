@@ -14,6 +14,8 @@ public class ReadySetGoScript : MonoBehaviour
 	public Color SetColour;
 	public Color GoColour;
 
+	public Rigidbody P1RB;
+	public Rigidbody P2RB;
 
 	private float StartTimer;
 	private TimerScript TimeScript;
@@ -36,6 +38,8 @@ public class ReadySetGoScript : MonoBehaviour
 			switch (ConvertTimer(StartTimer))
 			{
 				case (0):
+					P1RB.constraints = RigidbodyConstraints.FreezeAll;
+					P2RB.constraints = RigidbodyConstraints.FreezePosition;
 					ReadyTextP1.text = "";
 					ReadyTextP2.text = "";
 					break;
@@ -57,10 +61,14 @@ public class ReadySetGoScript : MonoBehaviour
 					ReadyTextP2.text = "GO";
 					ReadyTextP2.color = GoColour;
 					TimeScript.StartTimer(90f);
+					P1RB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
+					P2RB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
 					break;
 				case (6):
 					ReadyTextP1.text = "";
 					ReadyTextP2.text = "";
+					P1RB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+					P2RB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 					break;
 				default:
 					break;
