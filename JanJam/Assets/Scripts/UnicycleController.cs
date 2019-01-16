@@ -24,13 +24,15 @@ public class UnicycleController : MonoBehaviour
 	public float MoveSpeedP1;
 	public float MinSpeedP1 = 3f;
 	public float MaxSpeedP1 = 10f;
-	public float AccelerationSpeedP1 = .25f;
+	public float AccelerationSpeedP1 = 4f;
+
+	public bool PressedLeft;
 
 	[Header("Player2")]
 	public float MoveSpeedP2;
 	public float MinSpeedP2 = 3f;
 	public float MaxSpeedP2 = 10f;
-	public float AccelerationSpeedP2 = .25f;
+	public float AccelerationSpeedP2 = 4f;
 
 	private bool HasSpikedWheels;
 
@@ -61,12 +63,14 @@ public class UnicycleController : MonoBehaviour
 				break;
 		}
 
-		Movement();
+
 		RotateWheel();
 	}
 
+
 	private void FixedUpdate()
 	{
+		Movement();
 		Rotation();
 	}
 
@@ -109,6 +113,7 @@ public class UnicycleController : MonoBehaviour
 					}
 					else if (collision.gameObject.name == "Spikes")
 					{
+						AccelerationSpeedP1 = 6;
 						SpikedWheel.SetActive(true);
 						Wheel.SetActive(false);
 					}
@@ -122,6 +127,7 @@ public class UnicycleController : MonoBehaviour
 					}
 					else if (collision.gameObject.name == "Spikes")
 					{
+						AccelerationSpeedP2 = 6;
 						SpikedWheel.SetActive(true);
 						Wheel.SetActive(false);
 					}
@@ -164,11 +170,18 @@ public class UnicycleController : MonoBehaviour
 		{
 			case Player.Bike1:
 				Hoz = Input.GetAxis("HorizontalP1");
-				transform.eulerAngles += Vector3.up * Hoz * MoveSpeedP1;
+				transform.Rotate(new Vector3(0, Hoz, 0) * Time.deltaTime * 50f);
+
+				if (Hoz == 0)
+				{
+					Debug.Log("Not Pressed");
+					RB.constraints = RigidbodyConstraints.FreezeRotation;
+				}
+
 				break;
 			case Player.Bike2:
 				Hoz = Input.GetAxis("HorizontalP2");
-				transform.eulerAngles += Vector3.up * Hoz * MoveSpeedP2;
+				transform.eulerAngles += Vector3.up * Hoz * 10;
 				break;
 			default:
 				break;
@@ -229,29 +242,51 @@ public class UnicycleController : MonoBehaviour
 	{
 		if (!HasSpikedWheels)
 		{
-			if (Input.GetAxis("P1Acc") > 0)
+			if (Input.GetKeyDown(KeyCode.Q))
 			{
-				MoveSpeedP1 += Time.deltaTime * 5;
-			}
-			else
-			{
-				if (MoveSpeedP1 > 0)
+				if (!PressedLeft)
 				{
-					MoveSpeedP1 -= Time.deltaTime;
+					MoveSpeedP1 += Time.deltaTime * 5;
+					PressedLeft = true;
 				}
 			}
+			else if (Input.GetKeyDown(KeyCode.E))
+			{
+				if (PressedLeft)
+				{
+					MoveSpeedP1 -= Time.deltaTime;
+					PressedLeft = false;
+				}
+			}
+
+			//if (Input.GetAxis("P1Acc") > 0)
+			//{
+			//	MoveSpeedP1 += Time.deltaTime * 5;
+			//}
+			//else
+			//{
+			//	if (MoveSpeedP1 > 0)
+			//	{
+			//		MoveSpeedP1 -= Time.deltaTime;
+			//	}
+			//}
 		}
 		else
 		{
-			if (Input.GetAxis("P1Acc") > 0)
+			if (Input.GetKeyDown(KeyCode.Q))
 			{
-				MoveSpeedP1 += Time.deltaTime * 10;
+				if (!PressedLeft)
+				{
+					MoveSpeedP1 += Time.deltaTime * 10;
+					PressedLeft = true;
+				}
 			}
-			else
+			else if (Input.GetKeyDown(KeyCode.E))
 			{
-				if (MoveSpeedP1 > 0)
+				if (PressedLeft)
 				{
 					MoveSpeedP1 -= Time.deltaTime;
+					PressedLeft = false;
 				}
 			}
 		}
