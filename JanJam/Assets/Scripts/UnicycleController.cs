@@ -27,6 +27,7 @@ public class UnicycleController : MonoBehaviour
 	public float AccelerationSpeedP1 = 4f;
 
 	public bool PressedLeftP1;
+	public Tiers P1Tier;
 
 	[Header("Player2")]
 	public float MoveSpeedP2;
@@ -35,6 +36,7 @@ public class UnicycleController : MonoBehaviour
 	public float AccelerationSpeedP2 = 4f;
 
 	public bool PressedLeftP2;
+	public Tiers P2Tier;
 
 	private bool HasSpikedWheels;
 
@@ -65,7 +67,7 @@ public class UnicycleController : MonoBehaviour
 				break;
 		}
 
-
+		ChangeTiers();
 		RotateWheel();
 	}
 
@@ -107,7 +109,7 @@ public class UnicycleController : MonoBehaviour
 							break;
 					}
 
-					transform.localScale += Vector3.one * ScoreScript.Player1Score / 1000;
+					transform.localScale += Vector3.one * ScoreScript.Player1Score / 2000;
 					GetComponent<FixedJoint>().connectedAnchor = transform.localPosition;
 					break;
 				case Player.Bike2:
@@ -115,25 +117,25 @@ public class UnicycleController : MonoBehaviour
 					switch (collision.gameObject.GetComponent<TierScript>().CollectTier)
 					{
 						case Tiers.Tier1:
-							ScoreScript.Player1Scored(1);
+							ScoreScript.Player2Scored(1);
 							break;
 						case Tiers.Tier2:
-							ScoreScript.Player1Scored(2);
+							ScoreScript.Player2Scored(2);
 							break;
 						case Tiers.Tier3:
-							ScoreScript.Player1Scored(4);
+							ScoreScript.Player2Scored(4);
 							break;
 						case Tiers.Tier4:
-							ScoreScript.Player1Scored(8);
+							ScoreScript.Player2Scored(8);
 							break;
 						case Tiers.Tier5:
-							ScoreScript.Player1Scored(16);
+							ScoreScript.Player2Scored(16);
 							break;
 						default:
 							break;
 					}
 
-					transform.localScale += Vector3.one * ScoreScript.Player2Score / 1000;
+					transform.localScale += Vector3.one * ScoreScript.Player2Score / 2000;
 					GetComponent<FixedJoint>().connectedAnchor = transform.localPosition;
 					break;
 				default:
@@ -213,6 +215,7 @@ public class UnicycleController : MonoBehaviour
 		switch (WhichUnicycle)
 		{
 			case Player.Bike1:
+
 				Hoz = Input.GetAxis("HorizontalP1");
 				transform.Rotate(new Vector3(0, Hoz, 0) * Time.deltaTime * 50f);
 
@@ -224,8 +227,16 @@ public class UnicycleController : MonoBehaviour
 
 				break;
 			case Player.Bike2:
+
 				Hoz = Input.GetAxis("HorizontalP2");
-				transform.eulerAngles += Vector3.up * Hoz * 10;
+				transform.Rotate(new Vector3(0, Hoz, 0) * Time.deltaTime * 50f);
+
+				if (Hoz == 0)
+				{
+					Debug.Log("Not Pressed");
+					RB.constraints = RigidbodyConstraints.FreezeRotation;
+				}
+
 				break;
 			default:
 				break;
@@ -298,8 +309,15 @@ public class UnicycleController : MonoBehaviour
 			{
 				if (PressedLeftP1)
 				{
-					MoveSpeedP1 -= Time.deltaTime;
+					MoveSpeedP1 += Time.deltaTime * 5;
 					PressedLeftP1 = false;
+				}
+			}
+			else
+			{
+				if (MoveSpeedP1 > 0)
+				{
+					MoveSpeedP1 -= Time.deltaTime / 4;
 				}
 			}
 		}
@@ -317,8 +335,15 @@ public class UnicycleController : MonoBehaviour
 			{
 				if (PressedLeftP1)
 				{
-					MoveSpeedP1 -= Time.deltaTime;
+					MoveSpeedP1 += Time.deltaTime * 10;
 					PressedLeftP1 = false;
+				}
+			}
+			else
+			{
+				if (MoveSpeedP2 > 0)
+				{
+					MoveSpeedP2 -= Time.deltaTime / 4;
 				}
 			}
 		}
@@ -364,6 +389,56 @@ public class UnicycleController : MonoBehaviour
 					PressedLeftP2 = false;
 				}
 			}
+		}
+	}
+
+	
+	private void ChangeTiers()
+	{
+		switch (WhichUnicycle)
+		{
+			case Player.Bike1:
+
+				if (ScoreScript.Player1Score >= 100)
+				{
+					P1Tier = Tiers.Tier2;
+				}
+				else if (ScoreScript.Player1Score >= 200)
+				{
+					P1Tier = Tiers.Tier3;
+				}
+				else if (ScoreScript.Player1Score >= 500)
+				{
+					P1Tier = Tiers.Tier4;
+				}
+				else if (ScoreScript.Player1Score >= 1000)
+				{
+					P1Tier = Tiers.Tier5;
+				}
+
+				break;
+			case Player.Bike2:
+
+				if (ScoreScript.Player2Score >= 100)
+				{
+					P2Tier = Tiers.Tier2;
+				}
+				else if (ScoreScript.Player2Score >= 200)
+				{
+					P2Tier = Tiers.Tier3;
+				}
+				else if (ScoreScript.Player2Score >= 500)
+				{
+					P2Tier = Tiers.Tier4;
+				}
+				else if (ScoreScript.Player2Score >= 1000)
+				{
+					P2Tier = Tiers.Tier5;
+				}
+
+				break;
+			default:
+				break;
 		}
 	}
 }
