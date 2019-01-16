@@ -26,13 +26,15 @@ public class UnicycleController : MonoBehaviour
 	public float MaxSpeedP1 = 10f;
 	public float AccelerationSpeedP1 = 4f;
 
-	public bool PressedLeft;
+	public bool PressedLeftP1;
 
 	[Header("Player2")]
 	public float MoveSpeedP2;
 	public float MinSpeedP2 = 3f;
 	public float MaxSpeedP2 = 10f;
 	public float AccelerationSpeedP2 = 4f;
+
+	public bool PressedLeftP2;
 
 	private bool HasSpikedWheels;
 
@@ -76,20 +78,62 @@ public class UnicycleController : MonoBehaviour
 
 
 
-	private void OnCollisionEnter(Collision collision)
+	private void OnTriggerEnter(Collider collision)
 	{
 		if (collision.gameObject.tag == "Collect")
 		{
 			switch (WhichUnicycle)
 			{
 				case Player.Bike1:
-					ScoreScript.Player1Scored();
-					transform.localScale += Vector3.one * ScoreScript.Player1Score / 100;
+
+					switch (collision.gameObject.GetComponent<TierScript>().CollectTier)
+					{
+						case Tiers.Tier1:
+							ScoreScript.Player1Scored(1);
+							break;
+						case Tiers.Tier2:
+							ScoreScript.Player1Scored(2);
+							break;
+						case Tiers.Tier3:
+							ScoreScript.Player1Scored(4);
+							break;
+						case Tiers.Tier4:
+							ScoreScript.Player1Scored(8);
+							break;
+						case Tiers.Tier5:
+							ScoreScript.Player1Scored(16);
+							break;
+						default:
+							break;
+					}
+
+					transform.localScale += Vector3.one * ScoreScript.Player1Score / 1000;
 					GetComponent<FixedJoint>().connectedAnchor = transform.localPosition;
 					break;
 				case Player.Bike2:
-					ScoreScript.Player2Scored();
-					transform.localScale += Vector3.one * ScoreScript.Player2Score / 100;
+
+					switch (collision.gameObject.GetComponent<TierScript>().CollectTier)
+					{
+						case Tiers.Tier1:
+							ScoreScript.Player1Scored(1);
+							break;
+						case Tiers.Tier2:
+							ScoreScript.Player1Scored(2);
+							break;
+						case Tiers.Tier3:
+							ScoreScript.Player1Scored(4);
+							break;
+						case Tiers.Tier4:
+							ScoreScript.Player1Scored(8);
+							break;
+						case Tiers.Tier5:
+							ScoreScript.Player1Scored(16);
+							break;
+						default:
+							break;
+					}
+
+					transform.localScale += Vector3.one * ScoreScript.Player2Score / 1000;
 					GetComponent<FixedJoint>().connectedAnchor = transform.localPosition;
 					break;
 				default:
@@ -244,55 +288,40 @@ public class UnicycleController : MonoBehaviour
 		{
 			if (Input.GetKeyDown(KeyCode.Q))
 			{
-				if (!PressedLeft)
+				if (!PressedLeftP1)
 				{
 					MoveSpeedP1 += Time.deltaTime * 5;
-					PressedLeft = true;
+					PressedLeftP1 = true;
 				}
 			}
 			else if (Input.GetKeyDown(KeyCode.E))
 			{
-				if (PressedLeft)
+				if (PressedLeftP1)
 				{
 					MoveSpeedP1 -= Time.deltaTime;
-					PressedLeft = false;
+					PressedLeftP1 = false;
 				}
 			}
-
-			//if (Input.GetAxis("P1Acc") > 0)
-			//{
-			//	MoveSpeedP1 += Time.deltaTime * 5;
-			//}
-			//else
-			//{
-			//	if (MoveSpeedP1 > 0)
-			//	{
-			//		MoveSpeedP1 -= Time.deltaTime;
-			//	}
-			//}
 		}
 		else
 		{
 			if (Input.GetKeyDown(KeyCode.Q))
 			{
-				if (!PressedLeft)
+				if (!PressedLeftP1)
 				{
 					MoveSpeedP1 += Time.deltaTime * 10;
-					PressedLeft = true;
+					PressedLeftP1 = true;
 				}
 			}
 			else if (Input.GetKeyDown(KeyCode.E))
 			{
-				if (PressedLeft)
+				if (PressedLeftP1)
 				{
 					MoveSpeedP1 -= Time.deltaTime;
-					PressedLeft = false;
+					PressedLeftP1 = false;
 				}
 			}
 		}
-
-		//transform.Rotate(0, 0, Input.GetAxis("P1Acc"));
-
 	}
 
 
@@ -300,34 +329,41 @@ public class UnicycleController : MonoBehaviour
 	{
 		if (!HasSpikedWheels)
 		{
-			if (Input.GetAxis("P2Acc") > 0)
+			if (Input.GetKeyDown(KeyCode.Keypad4))
 			{
-				MoveSpeedP2 += Time.deltaTime * 5;
+				if (!PressedLeftP2)
+				{
+					MoveSpeedP2 += Time.deltaTime * 5;
+					PressedLeftP2 = true;
+				}
 			}
-			else
+			else if (Input.GetKeyDown(KeyCode.Keypad6))
 			{
-				if (MoveSpeedP2 > 0)
+				if (PressedLeftP2)
 				{
 					MoveSpeedP2 -= Time.deltaTime;
+					PressedLeftP2 = false;
 				}
 			}
 		}
 		else
 		{
-			if (Input.GetAxis("P2Acc") > 0)
+			if (Input.GetKeyDown(KeyCode.Keypad4))
 			{
-				MoveSpeedP2 += Time.deltaTime * 10;
+				if (!PressedLeftP2)
+				{
+					MoveSpeedP2 += Time.deltaTime * 10;
+					PressedLeftP2 = true;
+				}
 			}
-			else
+			else if (Input.GetKeyDown(KeyCode.Keypad6))
 			{
-				if (MoveSpeedP2 > 0)
+				if (PressedLeftP2)
 				{
 					MoveSpeedP2 -= Time.deltaTime;
+					PressedLeftP2 = false;
 				}
 			}
 		}
-
-		//transform.Rotate(0, 0, Input.GetAxis("P1Acc"));
-
 	}
 }

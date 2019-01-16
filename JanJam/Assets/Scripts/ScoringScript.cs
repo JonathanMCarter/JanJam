@@ -7,27 +7,23 @@ public class ScoringScript : MonoBehaviour
 {
 
 	public float Player1Score;
-	public float Player1Multi;
 
 	public float Player2Score;
-	public float Player2Multi;
 
 
-	internal void Player1Scored()
+	internal void Player1Scored(float Multi)
 	{
-		Player1Score += 1 * Player1Multi;
+		Player1Score += 1 * Multi;
 	}
 
-	internal void Player2Scored()
+	internal void Player2Scored(float Multi)
 	{
-		Player2Score += 1 * Player2Multi;
+		Player2Score += 1 * Multi;
 	}
 
 	internal void ResetScript()
 	{
 		Player1Score = 0;
 		Player2Score = 0;
-		Player1Multi = 1;
-		Player2Multi = 1;
 	}
 }
