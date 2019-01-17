@@ -21,6 +21,8 @@ public class ReadySetGoScript : MonoBehaviour
 	private float StartTimer;
 	private TimerScript TimeScript;
 
+	internal bool GameStarted;
+
 
     void Start()
     {
@@ -28,6 +30,7 @@ public class ReadySetGoScript : MonoBehaviour
 		ReadyTextP2 = GetComponentsInChildren<Text>()[1];
 		PedelText = GetComponentsInChildren<Text>()[2];
 		TimeScript = GameObject.Find("TimerClock").GetComponent<TimerScript>();
+		GameStarted = false;
     }
 
 
@@ -41,7 +44,7 @@ public class ReadySetGoScript : MonoBehaviour
 			{
 				case (0):
 					P1RB.constraints = RigidbodyConstraints.FreezeAll;
-					P2RB.constraints = RigidbodyConstraints.FreezePosition;
+					P2RB.constraints = RigidbodyConstraints.FreezeAll;
 					ReadyTextP1.text = "";
 					ReadyTextP2.text = "";
 					PedelText.text = "";
@@ -58,6 +61,8 @@ public class ReadySetGoScript : MonoBehaviour
 					ReadyTextP1.color = SetColour;
 					ReadyTextP2.text = "SET";
 					ReadyTextP2.color = SetColour;
+					P1RB.constraints = RigidbodyConstraints.FreezeAll;
+					P2RB.constraints = RigidbodyConstraints.FreezeAll;
 					break;
 				case (5):
 					ReadyTextP1.text = "GO";
@@ -74,6 +79,7 @@ public class ReadySetGoScript : MonoBehaviour
 					ReadyTextP2.text = "";
 					P1RB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 					P2RB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+					GameStarted = true;
 					break;
 				default:
 					break;

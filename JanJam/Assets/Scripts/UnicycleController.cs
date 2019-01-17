@@ -39,8 +39,10 @@ public class UnicycleController : MonoBehaviour
 	public Tiers P2Tier;
 
 	private bool HasSpikedWheels;
+	private bool HasRockets;
 
 	private ScoringScript ScoreScript;
+	private ReadySetGoScript ReadyScript;
 
 
 	void Start()
@@ -48,6 +50,7 @@ public class UnicycleController : MonoBehaviour
 		RB = GetComponent<Rigidbody>();
 		TS = GetComponent<Transform>();
 		ScoreScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoringScript>();
+		ReadyScript = GameObject.Find("ReadySetGoController").GetComponent<ReadySetGoScript>();
     }
 
 
@@ -69,13 +72,17 @@ public class UnicycleController : MonoBehaviour
 
 		ChangeTiers();
 		RotateWheel();
+		Boost();
 	}
 
 
 	private void FixedUpdate()
 	{
-		Movement();
-		Rotation();
+		if (ReadyScript.GameStarted)
+		{
+			Movement();
+			Rotation();
+		}
 	}
 
 
@@ -87,62 +94,16 @@ public class UnicycleController : MonoBehaviour
 			switch (WhichUnicycle)
 			{
 				case Player.Bike1:
-
-					switch (collision.gameObject.GetComponent<TierScript>().CollectTier)
-					{
-						case Tiers.Tier1:
-							ScoreScript.Player1Scored(1);
-							break;
-						case Tiers.Tier2:
-							ScoreScript.Player1Scored(2);
-							break;
-						case Tiers.Tier3:
-							ScoreScript.Player1Scored(4);
-							break;
-						case Tiers.Tier4:
-							ScoreScript.Player1Scored(8);
-							break;
-						case Tiers.Tier5:
-							ScoreScript.Player1Scored(16);
-							break;
-						default:
-							break;
-					}
-
 					transform.localScale += Vector3.one * ScoreScript.Player1Score / 2000;
 					GetComponent<FixedJoint>().connectedAnchor = transform.localPosition;
 					break;
 				case Player.Bike2:
-
-					switch (collision.gameObject.GetComponent<TierScript>().CollectTier)
-					{
-						case Tiers.Tier1:
-							ScoreScript.Player2Scored(1);
-							break;
-						case Tiers.Tier2:
-							ScoreScript.Player2Scored(2);
-							break;
-						case Tiers.Tier3:
-							ScoreScript.Player2Scored(4);
-							break;
-						case Tiers.Tier4:
-							ScoreScript.Player2Scored(8);
-							break;
-						case Tiers.Tier5:
-							ScoreScript.Player2Scored(16);
-							break;
-						default:
-							break;
-					}
-
 					transform.localScale += Vector3.one * ScoreScript.Player2Score / 2000;
 					GetComponent<FixedJoint>().connectedAnchor = transform.localPosition;
 					break;
 				default:
 					break;
 			}
-
-			Destroy(collision.gameObject);
 		}
 
 
@@ -156,12 +117,14 @@ public class UnicycleController : MonoBehaviour
 					if (collision.gameObject.name == "Rockets")
 					{
 						RocketPower.SetActive(true);
+						HasRockets = true;
 					}
 					else if (collision.gameObject.name == "Spikes")
 					{
 						AccelerationSpeedP1 = 6;
 						SpikedWheel.SetActive(true);
 						Wheel.SetActive(false);
+						HasSpikedWheels = true;
 					}
 
 					break;
@@ -170,12 +133,14 @@ public class UnicycleController : MonoBehaviour
 					if (collision.gameObject.name == "Rockets")
 					{
 						RocketPower.SetActive(true);
+						HasRockets = true;
 					}
 					else if (collision.gameObject.name == "Spikes")
 					{
 						AccelerationSpeedP2 = 6;
 						SpikedWheel.SetActive(true);
 						Wheel.SetActive(false);
+						HasSpikedWheels = true;
 					}
 
 					break;
@@ -341,9 +306,9 @@ public class UnicycleController : MonoBehaviour
 			}
 			else
 			{
-				if (MoveSpeedP2 > 0)
+				if (MoveSpeedP1 > 0)
 				{
-					MoveSpeedP2 -= Time.deltaTime / 4;
+					MoveSpeedP1 -= Time.deltaTime / 4;
 				}
 			}
 		}
@@ -366,8 +331,15 @@ public class UnicycleController : MonoBehaviour
 			{
 				if (PressedLeftP2)
 				{
-					MoveSpeedP2 -= Time.deltaTime;
+					MoveSpeedP2 += Time.deltaTime * 5;
 					PressedLeftP2 = false;
+				}
+			}
+			else
+			{
+				if (MoveSpeedP2 > 0)
+				{
+					MoveSpeedP2 -= Time.deltaTime / 4;
 				}
 			}
 		}
@@ -385,8 +357,15 @@ public class UnicycleController : MonoBehaviour
 			{
 				if (PressedLeftP2)
 				{
-					MoveSpeedP2 -= Time.deltaTime;
+					MoveSpeedP2 += Time.deltaTime * 10;
 					PressedLeftP2 = false;
+				}
+			}
+			else
+			{
+				if (MoveSpeedP2 > 0)
+				{
+					MoveSpeedP2 -= Time.deltaTime / 4;
 				}
 			}
 		}
@@ -399,41 +378,61 @@ public class UnicycleController : MonoBehaviour
 		{
 			case Player.Bike1:
 
-				if (ScoreScript.Player1Score >= 100)
-				{
-					P1Tier = Tiers.Tier2;
-				}
-				else if (ScoreScript.Player1Score >= 200)
+				if (ScoreScript.Player1Score >= 150)
 				{
 					P1Tier = Tiers.Tier3;
 				}
-				else if (ScoreScript.Player1Score >= 500)
+				else if (ScoreScript.Player1Score >= 50)
 				{
-					P1Tier = Tiers.Tier4;
-				}
-				else if (ScoreScript.Player1Score >= 1000)
-				{
-					P1Tier = Tiers.Tier5;
+					P1Tier = Tiers.Tier2;
 				}
 
 				break;
 			case Player.Bike2:
 
-				if (ScoreScript.Player2Score >= 100)
-				{
-					P2Tier = Tiers.Tier2;
-				}
-				else if (ScoreScript.Player2Score >= 200)
+				if (ScoreScript.Player2Score >= 150)
 				{
 					P2Tier = Tiers.Tier3;
 				}
-				else if (ScoreScript.Player2Score >= 500)
+				else if (ScoreScript.Player2Score >= 50)
 				{
-					P2Tier = Tiers.Tier4;
+					P2Tier = Tiers.Tier2;
 				}
-				else if (ScoreScript.Player2Score >= 1000)
+
+				break;
+			default:
+				break;
+		}
+	}
+
+
+	private void Boost()
+	{
+		switch (WhichUnicycle)
+		{
+			case Player.Bike1:
+
+				if (HasRockets)
 				{
-					P2Tier = Tiers.Tier5;
+					if (Input.GetKeyDown(KeyCode.F))
+					{
+						MoveSpeedP1 = MoveSpeedP1 * 2;
+						HasRockets = false;
+						RocketPower.SetActive(false);
+					}
+				}
+
+				break;
+			case Player.Bike2:
+
+				if (HasRockets)
+				{
+					if (Input.GetKeyDown(KeyCode.Keypad9))
+					{
+						MoveSpeedP2 = MoveSpeedP2 * 2;
+						HasRockets = false;
+						RocketPower.SetActive(false);
+					}
 				}
 
 				break;
