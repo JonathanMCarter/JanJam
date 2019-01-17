@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7750571247882303734}
   - component: {fileID: 7750571247882303729}
   - component: {fileID: 7750571247882303728}
+  - component: {fileID: 9116424620195680872}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameController
@@ -58,6 +59,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player1Score: 0
-  Player1Multi: 1
   Player2Score: 0
-  Player2Multi: 1
+--- !u!114 &9116424620195680872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7750571247882303731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d12a469b159019b4a850983aaa0aa896, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SceneChanged: 0
+  Sound_Prefab: {fileID: 2484463539526437512, guid: dced6a5c235502d4a9a11ff1f719b074,
+    type: 3}
+  Sound_Names:
+  - Collect
+  Sound_Clips:
+  - {fileID: 8300000, guid: 8521c3290a3bab24ea354c7e59200592, type: 3}
