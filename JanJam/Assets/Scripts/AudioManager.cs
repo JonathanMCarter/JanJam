@@ -48,6 +48,21 @@ public class AudioManager : MonoBehaviour
 	}
 
 
+	public void PlaySound(string request, float loudness, float pitchchange)                   // Fuction to select and play a sound asset from the start and destroy the prefab once it has played
+	{
+		if (Sound_Lib.ContainsKey(request))                                 // If the sound is in the library
+		{
+			GameObject clip = Instantiate(Sound_Prefab);                        // Instantiate a Sound prefab
+			clip.GetComponent<AudioSource>().clip = Sound_Lib[request];         // Get the prefab and add the requested clip to it
+			clip.GetComponent<AudioSource>().volume = loudness;
+			clip.GetComponent<AudioSource>().pitch = pitchchange;
+			clip.GetComponent<AudioSource>().Play();                            // play the audio from the prefab
+			Destroy(clip, clip.GetComponent<AudioSource>().clip.length);        // Destroy the prefab once the clip has finished playing
+			ChangeVolume(1);                                                    // reset the volume if it was altered
+		}
+	}
+
+
 
 	public void PlayFromTime(string request, float time)    // Function the play audio from a certain time (most is the same as PlaySound() )
 	{

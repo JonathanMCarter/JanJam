@@ -27,7 +27,7 @@ public class CollectableScript : MonoBehaviour
 		{
 			if (other.gameObject.GetComponentInParent<UnicycleController>().P1Tier >= GetComponent<TierScript>().CollectTier)
 			{
-				SoundScript.PlaySound("Collect");
+				SoundScript.PlaySound("Collect", .5f, .5f);
 				Mesh.enabled = false;
 				MeshCollider.enabled = false;
 
@@ -60,7 +60,7 @@ public class CollectableScript : MonoBehaviour
 		{
 			if (other.gameObject.GetComponentInParent<UnicycleController>().P2Tier >= GetComponent<TierScript>().CollectTier)
 			{
-				SoundScript.PlaySound("Collect");
+				SoundScript.PlaySound("Collect", .5f);
 				Mesh.enabled = false;
 				MeshCollider.enabled = false;
 

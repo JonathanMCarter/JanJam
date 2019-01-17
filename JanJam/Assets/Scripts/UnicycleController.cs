@@ -43,7 +43,7 @@ public class UnicycleController : MonoBehaviour
 
 	private ScoringScript ScoreScript;
 	private ReadySetGoScript ReadyScript;
-
+	private AudioManager SoundScript;
 
 	void Start()
 	{
@@ -51,6 +51,7 @@ public class UnicycleController : MonoBehaviour
 		TS = GetComponent<Transform>();
 		ScoreScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoringScript>();
 		ReadyScript = GameObject.Find("ReadySetGoController").GetComponent<ReadySetGoScript>();
+		SoundScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioManager>();
     }
 
 
@@ -113,7 +114,7 @@ public class UnicycleController : MonoBehaviour
 			switch (WhichUnicycle)
 			{
 				case Player.Bike1:
-					
+
 					if (collision.gameObject.name == "Rockets")
 					{
 						RocketPower.SetActive(true);
@@ -262,7 +263,7 @@ public class UnicycleController : MonoBehaviour
 	{
 		if (!HasSpikedWheels)
 		{
-			if (Input.GetKeyDown(KeyCode.Q))
+			if (Input.GetAxis("P1Acc") > 0)
 			{
 				if (!PressedLeftP1)
 				{
@@ -270,7 +271,7 @@ public class UnicycleController : MonoBehaviour
 					PressedLeftP1 = true;
 				}
 			}
-			else if (Input.GetKeyDown(KeyCode.E))
+			else if (Input.GetAxis("P1Acc") < 0)
 			{
 				if (PressedLeftP1)
 				{
@@ -288,7 +289,7 @@ public class UnicycleController : MonoBehaviour
 		}
 		else
 		{
-			if (Input.GetKeyDown(KeyCode.Q))
+			if (Input.GetAxis("P1Acc") > 0)
 			{
 				if (!PressedLeftP1)
 				{
@@ -296,7 +297,7 @@ public class UnicycleController : MonoBehaviour
 					PressedLeftP1 = true;
 				}
 			}
-			else if (Input.GetKeyDown(KeyCode.E))
+			else if (Input.GetAxis("P1Acc") < 0)
 			{
 				if (PressedLeftP1)
 				{
@@ -319,7 +320,7 @@ public class UnicycleController : MonoBehaviour
 	{
 		if (!HasSpikedWheels)
 		{
-			if (Input.GetKeyDown(KeyCode.Keypad4))
+			if (Input.GetAxis("P2Acc") > 0)
 			{
 				if (!PressedLeftP2)
 				{
@@ -327,7 +328,7 @@ public class UnicycleController : MonoBehaviour
 					PressedLeftP2 = true;
 				}
 			}
-			else if (Input.GetKeyDown(KeyCode.Keypad6))
+			else if (Input.GetAxis("P2Acc") < 0)
 			{
 				if (PressedLeftP2)
 				{
@@ -345,7 +346,7 @@ public class UnicycleController : MonoBehaviour
 		}
 		else
 		{
-			if (Input.GetKeyDown(KeyCode.Keypad4))
+			if (Input.GetAxis("P2Acc") > 0)
 			{
 				if (!PressedLeftP2)
 				{
@@ -353,7 +354,7 @@ public class UnicycleController : MonoBehaviour
 					PressedLeftP2 = true;
 				}
 			}
-			else if (Input.GetKeyDown(KeyCode.Keypad6))
+			else if (Input.GetAxis("P2Acc") < 0)
 			{
 				if (PressedLeftP2)
 				{
@@ -414,8 +415,9 @@ public class UnicycleController : MonoBehaviour
 
 				if (HasRockets)
 				{
-					if (Input.GetKeyDown(KeyCode.F))
+					if (Input.GetAxis("FireP1") > 0)
 					{
+						SoundScript.PlaySound("Bang", .5f);
 						MoveSpeedP1 = MoveSpeedP1 * 2;
 						HasRockets = false;
 						RocketPower.SetActive(false);
@@ -427,8 +429,9 @@ public class UnicycleController : MonoBehaviour
 
 				if (HasRockets)
 				{
-					if (Input.GetKeyDown(KeyCode.Keypad9))
+					if (Input.GetAxis("FireP2") > 0)
 					{
+						SoundScript.PlaySound("Bang", .5f);
 						MoveSpeedP2 = MoveSpeedP2 * 2;
 						HasRockets = false;
 						RocketPower.SetActive(false);

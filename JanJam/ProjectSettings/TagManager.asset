@@ -8,6 +8,7 @@ TagManager:
   - Bike1
   - Bike2
   - PowerUp
+  - Bike
   layers:
   - Default
   - TransparentFX

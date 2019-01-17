@@ -20,12 +20,14 @@ public class ReadySetGoScript : MonoBehaviour
 
 	private float StartTimer;
 	private TimerScript TimeScript;
+	private AudioManager SoundScript;
 
 	internal bool GameStarted;
-
+	private bool SoundPlayed;
 
     void Start()
     {
+		SoundScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioManager>();
 		ReadyTextP1 = GetComponentsInChildren<Text>()[0];
 		ReadyTextP2 = GetComponentsInChildren<Text>()[1];
 		PedelText = GetComponentsInChildren<Text>()[2];
@@ -50,11 +52,19 @@ public class ReadySetGoScript : MonoBehaviour
 					PedelText.text = "";
 					break;
 				case (1):
+					if (!SoundPlayed)
+					{
+						SoundScript.PlaySound("Ready", .75f);
+						SoundPlayed = true;
+					}
 					ReadyTextP1.text = "READY";
 					ReadyTextP1.color = ReadyColour;
 					ReadyTextP2.text = "READY";
 					ReadyTextP2.color = ReadyColour;
 					PedelText.text = "START PEDELLING.....";
+					break;
+				case (2):
+					SoundPlayed = false;
 					break;
 				case (3):
 					ReadyTextP1.text = "SET";
@@ -63,18 +73,32 @@ public class ReadySetGoScript : MonoBehaviour
 					ReadyTextP2.color = SetColour;
 					P1RB.constraints = RigidbodyConstraints.FreezeAll;
 					P2RB.constraints = RigidbodyConstraints.FreezeAll;
+					if (!SoundPlayed)
+					{
+						SoundScript.PlaySound("Set", .75f);
+						SoundPlayed = true;
+					}
+					break;
+				case (4):
+					SoundPlayed = false;
 					break;
 				case (5):
 					ReadyTextP1.text = "GO";
 					ReadyTextP1.color = GoColour;
 					ReadyTextP2.text = "GO";
 					ReadyTextP2.color = GoColour;
+					if (!SoundPlayed)
+					{
+						SoundScript.PlaySound("Go", .75f);
+						SoundPlayed = true;
+					}
 					TimeScript.StartTimer(90f);
 					P1RB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
 					P2RB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
 					PedelText.text = "";
 					break;
 				case (6):
+					SoundPlayed = false;
 					ReadyTextP1.text = "";
 					ReadyTextP2.text = "";
 					P1RB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
